@@ -24,8 +24,12 @@ server.post('/api/register', (req, res) => {
 	user.password = hash;
 
 	Users.add(user)
-		.then((saved) => {
-			res.status(201).json(saved);
+		.then((user) => {
+			const token = generateToken(user);
+			res.status(201).json({
+				message : `${user.username} Successfully registered!`,
+				token
+			});
 		})
 		.catch((err) => {
 			res.status(500).json(err.message);
